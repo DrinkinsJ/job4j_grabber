@@ -71,7 +71,6 @@
           <failsOnError>true</failsOnError>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
         </configuration>
-
         <executions>
           <execution>
             <id>validate</id>
