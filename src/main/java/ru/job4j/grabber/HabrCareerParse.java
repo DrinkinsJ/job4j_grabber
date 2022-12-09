@@ -19,8 +19,16 @@ public class HabrCareerParse {
 
 
     public static void main(String[] args) throws IOException {
-        Connection connection = Jsoup.connect(PAGE_LINK);
-        Document document = connection.get();
+        HabrCareerParse habrCareerParse = new HabrCareerParse();
+        for (int i = 1; i < 6; i++) {
+            System.out.println("-------------PAGE:" + i + " ------------");
+            Connection connection = Jsoup.connect(PAGE_LINK + "?page=" + i);
+            Document document = connection.get();
+            habrCareerParse.printPage(document);
+        }
+    }
+
+    private void printPage(Document document) {
         DateTimeParser dateTimeParser = new HabrCareerDateTimeParser();
         Elements rows = document.select(".vacancy-card__inner");
         rows.forEach(row -> {
