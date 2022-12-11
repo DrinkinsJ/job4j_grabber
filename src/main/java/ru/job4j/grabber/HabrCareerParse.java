@@ -27,7 +27,7 @@ public class HabrCareerParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException {
         HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
         System.out.println(habrCareerParse.list(PAGE_LINK + "?page="));
     }
@@ -46,19 +46,18 @@ public class HabrCareerParse implements Parse {
     }
 
     @Override
-    public List<Post> list(String link) {
+    public List<Post> list(String link) throws IllegalAccessException {
         List<Post> postList = new ArrayList<>();
 
         for (int i = 1; i <= PAGES; i++) {
             System.out.println("-------------PAGE:" + i + " ------------");
             Connection connection = Jsoup.connect(PAGE_LINK + "?page=" + i);
-            Document document = null;
+            Document document;
             try {
                 document = connection.get();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IllegalAccessException(e.toString());
             }
-            assert document != null;
             Elements rows = document.select(".vacancy-card__inner");
             for (Element row : rows) {
                 postList.add(parseRow(row));
