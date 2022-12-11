@@ -19,8 +19,6 @@ public class HabrCareerParse implements Parse {
 
     private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
 
-    private static final String DELIMETR = "----------------------------------";
-
     private static final int PAGES = 1;
 
     private final DateTimeParser dateTimeParser;
@@ -29,7 +27,7 @@ public class HabrCareerParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
         System.out.println(habrCareerParse.list(PAGE_LINK + "?page="));
     }
