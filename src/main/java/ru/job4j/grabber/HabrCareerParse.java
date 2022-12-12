@@ -19,7 +19,7 @@ public class HabrCareerParse implements Parse {
 
     private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
 
-    private static final int PAGES = 1;
+    private static final int PAGES = 5;
 
     private final DateTimeParser dateTimeParser;
 
@@ -27,7 +27,7 @@ public class HabrCareerParse implements Parse {
         this.dateTimeParser = dateTimeParser;
     }
 
-    public static void main(String[] args) throws IllegalAccessException {
+    public static void main(String[] args) throws IllegalArgumentException {
         HabrCareerParse habrCareerParse = new HabrCareerParse(new HabrCareerDateTimeParser());
         System.out.println(habrCareerParse.list(PAGE_LINK + "?page="));
     }
@@ -46,17 +46,16 @@ public class HabrCareerParse implements Parse {
     }
 
     @Override
-    public List<Post> list(String link) throws IllegalAccessException {
+    public List<Post> list(String link) throws IllegalArgumentException {
         List<Post> postList = new ArrayList<>();
 
         for (int i = 1; i <= PAGES; i++) {
-            System.out.println("-------------PAGE:" + i + " ------------");
             Connection connection = Jsoup.connect(PAGE_LINK + "?page=" + i);
             Document document;
             try {
                 document = connection.get();
             } catch (IOException e) {
-                throw new IllegalAccessException(e.toString());
+                throw new IllegalArgumentException(e.toString());
             }
             Elements rows = document.select(".vacancy-card__inner");
             for (Element row : rows) {

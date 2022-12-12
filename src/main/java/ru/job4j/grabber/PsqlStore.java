@@ -30,8 +30,8 @@ public class PsqlStore implements Store {
             properties.load(in);
             System.out.println(properties);
             try (PsqlStore psqlStore = new PsqlStore(properties)) {
-                Post post1 = new Post("one", "one", "one", LocalDateTime.now());
-                Post post2 = new Post("two", "two", "two", LocalDateTime.now());
+                Post post1 = new Post("four", "four", "four", LocalDateTime.now());
+                Post post2 = new Post("five", "five", "five", LocalDateTime.now());
                 psqlStore.save(post1);
                 psqlStore.save(post2);
                 System.out.println(psqlStore.getAll());
@@ -44,7 +44,7 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void save(Post post) throws SQLException {
+    public void save(Post post) {
         try (PreparedStatement preparedStatement = cnn.prepareStatement(
                 "INSERT INTO post(name, text, link, created) VALUES(?,?,?,?)"
                         + "ON CONFLICT (link) DO NOTHING;", Statement.RETURN_GENERATED_KEYS)) {
@@ -58,6 +58,8 @@ public class PsqlStore implements Store {
                     post.setId(generatedKeys.getInt(1));
                 }
             }
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.toString());
         }
     }
 
