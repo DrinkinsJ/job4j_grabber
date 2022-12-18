@@ -17,7 +17,7 @@ public class HabrCareerParse implements Parse {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
 
-    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
+    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer?page=", SOURCE_LINK);
 
     private static final int PAGES = 5;
 
@@ -38,7 +38,7 @@ public class HabrCareerParse implements Parse {
             document = Jsoup.connect(link).get();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.toString());
         }
         assert document != null;
         Elements row = document.select(".style-ugc");
@@ -46,11 +46,11 @@ public class HabrCareerParse implements Parse {
     }
 
     @Override
-    public List<Post> list(String link) throws IllegalArgumentException {
+    public List<Post> list(String link) {
         List<Post> postList = new ArrayList<>();
 
         for (int i = 1; i <= PAGES; i++) {
-            Connection connection = Jsoup.connect(PAGE_LINK + "?page=" + i);
+            Connection connection = Jsoup.connect(PAGE_LINK + i);
             Document document;
             try {
                 document = connection.get();
