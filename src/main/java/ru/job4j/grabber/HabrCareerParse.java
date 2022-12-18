@@ -17,7 +17,7 @@ public class HabrCareerParse implements Parse {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
 
-    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer?page=", SOURCE_LINK);
+    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
 
     private static final int PAGES = 5;
 
@@ -48,7 +48,7 @@ public class HabrCareerParse implements Parse {
         List<Post> postList = new ArrayList<>();
 
         for (int i = 1; i <= PAGES; i++) {
-            Connection connection = Jsoup.connect(PAGE_LINK + i);
+            Connection connection = Jsoup.connect(link + i);
             Document document;
             try {
                 document = connection.get();
