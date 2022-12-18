@@ -1,5 +1,8 @@
 package ru.job4j.grabber;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -8,8 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+
 public class PsqlStore implements Store {
-    private final Connection cnn;
+
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
+
+    private Connection cnn;
 
     public PsqlStore(Properties cfg) {
         try {
@@ -20,7 +27,7 @@ public class PsqlStore implements Store {
                     cfg.getProperty("password")
             );
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            LOG.error("Something broken while creating constructor", e);
         }
     }
 
@@ -38,7 +45,7 @@ public class PsqlStore implements Store {
                 System.out.println(psqlStore.findById(1));
                 System.out.println(psqlStore.findById(2));
             } catch (Exception e) {
-                throw new IllegalStateException(e.toString());
+                LOG.error("Something broken in main", e);
             }
         }
     }
@@ -59,12 +66,12 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.toString());
+            LOG.error("Something broken while save posts", e);
         }
     }
 
     @Override
-    public List<Post> getAll() throws SQLException {
+    public List<Post> getAll(){
         List<Post> posts = new ArrayList<>();
         try (PreparedStatement preparedStatement = cnn.prepareStatement(
                 "Select * from post;")) {
@@ -73,12 +80,14 @@ public class PsqlStore implements Store {
                     posts.add(setPost(resultSet));
                 }
             }
+        } catch (SQLException e) {
+            LOG.error("Something broken while getAll posts", e);
         }
         return posts;
     }
 
     @Override
-    public Post findById(int id) throws SQLException {
+    public Post findById(int id){
         Post post = null;
         try (PreparedStatement preparedStatement = cnn.prepareStatement(
                 "SELECT * FROM post where id = ?;")) {
@@ -88,6 +97,8 @@ public class PsqlStore implements Store {
                     post = setPost(resultSet);
                 }
             }
+        } catch (SQLException e) {
+            LOG.error("Something broken while findById posts", e);
         }
         return post;
     }
