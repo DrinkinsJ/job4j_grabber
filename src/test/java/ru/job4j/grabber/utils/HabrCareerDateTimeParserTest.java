@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HabrCareerDateTimeParserTest {
 
     @Test
-    void dateTimeParserReturnLocalDayTime() {
+    void whenDateTimeParserReturnLocalDayTime() {
         DateTimeParser dateTimeParser = new HabrCareerDateTimeParser();
         String expected = "2022-12-11T16:27:56";
-        assertThat(dateTimeParser.parse("2022-12-11T16:27:56+03:00").toString()).isEqualTo(expected);
+        assertThat(dateTimeParser.parse("2022-12-11T16:27:56+03:00")).isEqualTo(expected);
     }
 }
