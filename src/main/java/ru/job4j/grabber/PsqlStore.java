@@ -71,7 +71,7 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public List<Post> getAll(){
+    public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
         try (PreparedStatement preparedStatement = cnn.prepareStatement(
                 "Select * from post;")) {
@@ -87,7 +87,7 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Post findById(int id){
+    public Post findById(int id) {
         Post post = null;
         try (PreparedStatement preparedStatement = cnn.prepareStatement(
                 "SELECT * FROM post where id = ?;")) {

@@ -33,14 +33,12 @@ public class HabrCareerParse implements Parse {
     }
 
     private String retrieveDescription(String link) {
-        Document document = null;
+        Document document;
         try {
             document = Jsoup.connect(link).get();
-
         } catch (IOException e) {
             throw new IllegalArgumentException(e.toString());
         }
-        assert document != null;
         Elements row = document.select(".style-ugc");
         return row.text();
     }
@@ -70,8 +68,8 @@ public class HabrCareerParse implements Parse {
         Element linkElement = titleElement.child(0);
         String titleString = linkElement.text();
         String linkString = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-        LocalDateTime localDateTime = dateTimeParser.parse(row.select(".vacancy-card__date").first().child(0).attr(
-                "datetime"));
+        LocalDateTime localDateTime = dateTimeParser.parse(row.select(".vacancy-card__date")
+                .first().child(0).attr("datetime"));
         String desc = retrieveDescription(linkString);
         return new Post(titleString, linkString, desc, localDateTime);
     }
